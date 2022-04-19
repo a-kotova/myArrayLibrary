@@ -1,10 +1,15 @@
 class Chapter {
-  reduce(array, callback, initialValue = null) {
-    let accumulator = initialValue;
-    for (let i = 0; i < array.length; i++) {
-      accumulator = callback(accumulator, array[i]);
+  reduce(array, callback, initialValue) {
+    try {
+      if (initialValue === undefined) throw new Error();
+      let accumulator = initialValue;
+      for (let i = 0; i < array.length; i++) {
+        accumulator = callback(accumulator, array[i]);
+      }
+      return accumulator;
+    } catch(error) {
+        console.error('Missing argument: please specify an initial value');
     }
-    return accumulator;
   }
 
   forEach(array, callback) {
