@@ -1,4 +1,10 @@
 class Chapter {
+  forEach(array, callback) {
+    for (let i = 0; i < array.length; i++) {
+      callback(array[i]);
+    }
+  }
+
   skip(array, n) {
     const output = array.slice();
     output.splice(0, n);
