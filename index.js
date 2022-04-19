@@ -1,5 +1,4 @@
-class Chapter {
-  take(array, n) {
+module.exports = class Chapter {
+take(array, n) {
     return array.slice(0, n);
-  }
 }
