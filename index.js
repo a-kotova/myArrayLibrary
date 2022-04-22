@@ -1,15 +1,11 @@
 class Chapter {
   reduce(array, callback, initialValue) {
-    try {
-      if (initialValue === undefined) throw new Error();
+      if (initialValue === undefined) throw new Error('Missing argument: please specify an initial value');
       let accumulator = initialValue;
       for (let i = 0; i < array.length; i++) {
         accumulator = callback(accumulator, array[i]);
       }
       return accumulator;
-    } catch(error) {
-        console.error('Missing argument: please specify an initial value');
-    }
   }
 
   forEach(array, callback) {
