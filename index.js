@@ -7,6 +7,23 @@ class Chapter {
     return output;
   }
 
+  reduce(array, callback, initialValue) {
+    if (initialValue === undefined) throw new Error('Missing argument: please specify an initial value');
+    let accumulator = initialValue;
+    for (let i = 0; i < array.length; i++) {
+      accumulator = callback(accumulator, array[i]);
+    }
+    return accumulator;
+  }
+
+  map(array, callback) {
+    const output = [];
+    for (let i = 0; i < array.length; i++) {
+      output.push(callback(array[i]));
+    }
+    return output;
+  }
+
   forEach(array, callback) {
     for (let i = 0; i < array.length; i++) {
       callback(array[i]);
