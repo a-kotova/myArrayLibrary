@@ -1,4 +1,12 @@
 class Chapter {
+  filter(array, callback) {
+    const output = [];
+    for (let i = 0; i < array.length; i++) {
+      if (callback(array[i])) output.push(array[i]);
+    }
+    return output;
+  }
+
   reduce(array, callback, initialValue) {
     if (initialValue === undefined) throw new Error('Missing argument: please specify an initial value');
     let accumulator = initialValue;
