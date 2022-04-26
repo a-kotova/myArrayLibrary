@@ -1,10 +1,25 @@
 class Chapter {
+  constructor() {
+    this.result = null;
+  }
+
   filter(array, callback) {
     const output = [];
-    for (let i = 0; i < array.length; i++) {
-      if (callback(array[i])) output.push(array[i]);
+
+    if (typeof array === 'function') {
+      for (let i = 0; i < this.result.length; i++) {
+        if (array(this.result[i])) output.push(this.result[i]);
+      }
+
+      this.result = [...output];
+      return this;
+    } else {
+      for (let i = 0; i < array.length; i++) {
+        if (callback(array[i])) output.push(array[i]);
+      }
+
+      return output;
     }
-    return output;
   }
 
   reduce(array, callback, initialValue) {
@@ -38,6 +53,15 @@ class Chapter {
 
   take(array, n) {
     return array.slice(0, n);
+  }
+
+  chain(array) {
+    this.result = [...array];
+    return this;
+  }
+
+  value() {
+    return this.result;
   }
 }
 
