@@ -28,14 +28,14 @@ class Chapter {
     return output;
   }
 
-  forEach(array, callback) {
-    if (typeof array === 'function') {
-      for (let i = 0; i < this.result.length; i++) {
-        array(this.result[i]);
+  forEach(sourceItem, callback) {
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        sourceItem(element);
       }
     } else {
-      for (let i = 0; i < array.length; i++) {
-        callback(array[i]);
+      for (let element of sourceItem) {
+        callback(element);
       }
     }
   }
