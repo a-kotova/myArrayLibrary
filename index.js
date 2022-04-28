@@ -1,4 +1,8 @@
 class Chapter {
+  constructor() {
+    this.result = null;
+  }
+
   filter(array, callback) {
     const output = [];
     for (let i = 0; i < array.length; i++) {
@@ -24,9 +28,15 @@ class Chapter {
     return output;
   }
 
-  forEach(array, callback) {
-    for (let i = 0; i < array.length; i++) {
-      callback(array[i]);
+  forEach(sourceItem, callback) {
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        sourceItem(element);
+      }
+    } else {
+      for (let element of sourceItem) {
+        callback(element);
+      }
     }
   }
 
@@ -38,6 +48,15 @@ class Chapter {
 
   take(array, n) {
     return array.slice(0, n);
+  }
+
+  chain(array) {
+    this.result = [...array];
+    return this;
+  }
+
+  value() {
+    return this.result;
   }
 }
 
