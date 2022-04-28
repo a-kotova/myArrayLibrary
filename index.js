@@ -3,23 +3,27 @@ class Chapter {
     this.result = null;
   }
 
-  filter(array, callback) {
+  filter(sourceItem, callback) {
     const output = [];
 
-    if (typeof array === 'function') {
-      for (let i = 0; i < this.result.length; i++) {
-        if (array(this.result[i])) output.push(this.result[i]);
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        if (sourceItem(element)) {
+          output.push(element);
+        }
       }
-
       this.result = [...output];
-      return this;
-    } else {
-      for (let i = 0; i < array.length; i++) {
-        if (callback(array[i])) output.push(array[i]);
-      }
 
-      return output;
+      return this;
     }
+
+    for (let element of sourceItem) {
+      if (callback(element)) {
+        output.push(element);
+      }
+    }
+
+    return output;
   }
 
   reduce(array, callback, initialValue) {
