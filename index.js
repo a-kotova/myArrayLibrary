@@ -1,9 +1,28 @@
 class Chapter {
-  filter(array, callback) {
+  constructor() {
+    this.result = null;
+  }
+
+  filter(sourceItem, callback) {
     const output = [];
-    for (let i = 0; i < array.length; i++) {
-      if (callback(array[i])) output.push(array[i]);
+
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        if (sourceItem(element)) {
+          output.push(element);
+        }
+      }
+      this.result = [...output];
+
+      return this;
     }
+
+    for (let element of sourceItem) {
+      if (callback(element)) {
+        output.push(element);
+      }
+    }
+
     return output;
   }
 
@@ -38,6 +57,15 @@ class Chapter {
 
   take(array, n) {
     return array.slice(0, n);
+  }
+
+  chain(array) {
+    this.result = [...array];
+    return this;
+  }
+
+  value() {
+    return this.result;
   }
 }
 
