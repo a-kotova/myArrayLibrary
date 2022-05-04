@@ -1,4 +1,8 @@
 class Chapter {
+  constructor() {
+    this.result = null;
+  }
+
   filter(array, callback) {
     const output = [];
     for (let i = 0; i < array.length; i++) {
@@ -7,12 +11,22 @@ class Chapter {
     return output;
   }
 
-  reduce(array, callback, initialValue) {
-    if (initialValue === undefined) throw new Error('Missing argument: please specify an initial value');
-    let accumulator = initialValue;
-    for (let i = 0; i < array.length; i++) {
-      accumulator = callback(accumulator, array[i]);
+  reduce(sourceItem, callback, initialValue) {
+    if (typeof sourceItem !== 'function' && initialValue === undefined ||
+      typeof sourceItem === 'function' && callback === undefined) throw new Error('Missing argument: please specify an initial value');
+
+    let accumulator = initialValue !== undefined ? initialValue : callback;
+
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        accumulator = sourceItem(accumulator, element);
+      }
+    } else {
+      for (let element of sourceItem) {
+        accumulator = callback(accumulator, element);
+      }
     }
+
     return accumulator;
   }
 
@@ -38,6 +52,15 @@ class Chapter {
 
   take(array, n) {
     return array.slice(0, n);
+  }
+
+  chain(array) {
+    this.result = [...array];
+    return this;
+  }
+
+  value() {
+    return this.result;
   }
 }
 
