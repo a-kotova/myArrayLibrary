@@ -12,19 +12,21 @@ class Chapter {
   }
 
   reduce(sourceItem, callback, initialValue) {
-    if (typeof sourceItem !== 'function' && initialValue === undefined ||
-      typeof sourceItem === 'function' && callback === undefined) throw new Error('Missing argument: please specify an initial value');
-
     let accumulator = initialValue !== undefined ? initialValue : callback;
 
     if (typeof sourceItem === 'function') {
+      if (callback === undefined) throw new Error('Missing argument: please specify an initial value');
       for (let element of this.result) {
         accumulator = sourceItem(accumulator, element);
       }
-    } else {
-      for (let element of sourceItem) {
-        accumulator = callback(accumulator, element);
-      }
+
+      return accumulator;
+    }
+
+    if (initialValue === undefined) throw new Error('Missing argument: please specify an initial value');
+
+    for (let element of sourceItem) {
+      accumulator = callback(accumulator, element);
     }
 
     return accumulator;
