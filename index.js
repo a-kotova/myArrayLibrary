@@ -35,11 +35,22 @@ class Chapter {
     return accumulator;
   }
 
-  map(array, callback) {
+  map(sourceItem, callback) {
     const output = [];
-    for (let i = 0; i < array.length; i++) {
-      output.push(callback(array[i]));
+
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        output.push(sourceItem(element));
+      }
+      this.result = output;
+
+      return this;
     }
+
+    for (let element of sourceItem) {
+      output.push(callback(element));
+    }
+
     return output;
   }
 
@@ -49,14 +60,27 @@ class Chapter {
     }
   }
 
-  skip(array, n) {
-    const output = array.slice();
+  skip(sourceItem, n) {
+    if (typeof sourceItem === 'number') {
+      const output = this.result.slice();
+
+      output.splice(0, sourceItem);
+      this.result = output;
+      return this;
+    }
+
+    const output = sourceItem.slice();
+
     output.splice(0, n);
     return output;
   }
 
-  take(array, n) {
-    return array.slice(0, n);
+  take(sourceItem, n) {
+    if (typeof sourceItem === 'number') {
+      this.result = this.result.slice(0, sourceItem);
+      return this;
+    }
+    return sourceItem.slice(0, n);
   }
 
   chain(array) {
