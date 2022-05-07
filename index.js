@@ -3,11 +3,26 @@ class Chapter {
     this.result = null;
   }
 
-  filter(array, callback) {
+  filter(sourceItem, callback) {
     const output = [];
-    for (let i = 0; i < array.length; i++) {
-      if (callback(array[i])) output.push(array[i]);
+
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        if (sourceItem(element)) {
+          output.push(element);
+        }
+      }
+      this.result = [...output];
+
+      return this;
     }
+
+    for (let element of sourceItem) {
+      if (callback(element)) {
+        output.push(element);
+      }
+    }
+
     return output;
   }
 
@@ -20,11 +35,22 @@ class Chapter {
     return accumulator;
   }
 
-  map(array, callback) {
+  map(sourceItem, callback) {
     const output = [];
-    for (let i = 0; i < array.length; i++) {
-      output.push(callback(array[i]));
+
+    if (typeof sourceItem === 'function') {
+      for (let element of this.result) {
+        output.push(sourceItem(element));
+      }
+      this.result = output;
+
+      return this;
     }
+
+    for (let element of sourceItem) {
+      output.push(callback(element));
+    }
+
     return output;
   }
 
@@ -33,21 +59,35 @@ class Chapter {
       for (let element of this.result) {
         sourceItem(element);
       }
-    } else {
-      for (let element of sourceItem) {
-        callback(element);
-      }
+      return
+    }
+
+    for (let element of sourceItem) {
+      callback(element);
     }
   }
 
-  skip(array, n) {
-    const output = array.slice();
+  skip(sourceItem, n) {
+    if (typeof sourceItem === 'number') {
+      const output = this.result.slice();
+
+      output.splice(0, sourceItem);
+      this.result = output;
+      return this;
+    }
+
+    const output = sourceItem.slice();
+
     output.splice(0, n);
     return output;
   }
 
-  take(array, n) {
-    return array.slice(0, n);
+  take(sourceItem, n) {
+    if (typeof sourceItem === 'number') {
+      this.result = this.result.slice(0, sourceItem);
+      return this;
+    }
+    return sourceItem.slice(0, n);
   }
 
   chain(array) {
